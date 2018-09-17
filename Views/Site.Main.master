@@ -1,0 +1,625 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="Site.Main.master.cs" Inherits="Site_Main" %>
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head runat="server">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CP-Meiji | SAM - <%: Page.Title %></title>
+
+    <asp:PlaceHolder runat="server">
+        <%: Scripts.Render("~/bundles/modernizr") %>
+    </asp:PlaceHolder>
+    <webopt:BundleReference runat="server" Path="~/Content/css" />
+
+    <link href="~/cpmeiji.ico" rel="shortcut icon" type="image/x-icon" />
+    <!--<link href="https://fonts.googleapis.com/css?family=Prompt" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">-->
+    <!--<link href="https://fonts.googleapis.com/css?family=Mitr" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Kanit" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Abel" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Titillium+Web" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Slabo+27px" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Hind" rel="stylesheet">
+    -->
+
+    <!--
+    <link href="http://cdn.rawgit.com/davidstutz/bootstrap-multiselect/master/dist/css/bootstrap-multiselect.css" rel="stylesheet" type="text/css" />
+    <script src="http://cdn.rawgit.com/davidstutz/bootstrap-multiselect/master/dist/js/bootstrap-multiselect.js" type="text/javascript"></script>
+    -->
+
+    <%--<script src="../Scripts/jquery-1.10.2.min.js"></script>--%>
+
+    <script src="../Scripts/alertify.min.js"></script>
+    <script src="../Scripts/Chart.min.js"></script>
+    <link href="../Scripts/GridviewScroll.css" rel="stylesheet" />
+
+    <script src="../Scripts/sweetalert.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="../Styles/sweetalert.css">
+    <!--<link rel="stylesheet" type="text/css" href="../Styles/alertify.css">-->
+    <link rel="stylesheet" type="text/css" href="../Styles/alertify.default.css">
+
+    <script>
+
+        function startTime() {
+
+            var weekday = new Array(7);
+            weekday[0] = "วันอาทิตย์";
+            weekday[1] = "วันจันทร์";
+            weekday[2] = "วันอังคาร";
+            weekday[3] = "วันพุธ";
+            weekday[4] = "วันพฤหัสบดี";
+            weekday[5] = "วันศุกร์";
+            weekday[6] = "วันเสาร์";
+
+            var month = new Array(12);
+            month[0] = "มกราคม";
+            month[1] = "กุมภาพันธ์";
+            month[2] = "มีนาคม";
+            month[3] = "เมษายน";
+            month[4] = "พฤษภาคม";
+            month[5] = "มิถุนายน";
+            month[6] = "กรกฎาคม";
+            month[7] = "สิงหาคม";
+            month[8] = "กันยายน";
+            month[9] = "ตุลาคม";
+            month[10] = "พฤศจิกายน";
+            month[11] = "ธันวาคม";
+
+            var today = new Date();
+            var h = today.getHours();
+            var m = today.getMinutes();
+            var s = today.getSeconds();
+            m = checkTime(m);
+            s = checkTime(s);
+            document.getElementById('time').innerHTML =
+            weekday[today.getDay()] + ", " + today.getDate() + " " + month[today.getMonth()] + " " + today.getFullYear() + ", " + h + ":" + m + ":" + s;
+            document.getElementById('date').innerHTML =
+            weekday[today.getDay()] + ", " + today.getDate() + " " + month[today.getMonth()] + " " + today.getFullYear();
+            var t = setTimeout(startTime, 500);
+        }
+        function checkTime(i) {
+            if (i < 10) { i = "0" + i };  // add zero in front of numbers < 10
+            return i;
+        }
+
+
+        function openNav() {
+            document.getElementById("mySidenav").style.width = "250px";
+            document.getElementById("main").style.marginLeft = "250px";
+            $("#menu1").hide();
+            $("#mySidenav").show();
+        }
+
+        function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+            document.getElementById("main").style.marginLeft = "0";
+            $("#menu1").show();
+        }
+
+    </script>
+
+    <script type="text/javascript">
+        $(function () {
+            startTime();
+        });
+    </script>
+
+    <style>
+        .cb label {
+            margin-left: 20px;
+        }
+
+        .progress-red {
+            background-color: #d9534f;
+        }
+    </style>
+
+    <style>
+        .stepwizard-step p {
+            font-family: 'Prompt', sans-serif;
+            margin-top: 10px;
+        }
+
+        .stepwizard-row {
+            display: table-row;
+        }
+
+        .stepwizard {
+            display: table;
+            width: 100%;
+            position: relative;
+        }
+
+        .stepwizard-step button[disabled] {
+            opacity: 1 !important;
+            filter: alpha(opacity=100) !important;
+        }
+
+        .stepwizard-row:before {
+            top: 14px;
+            bottom: 0;
+            position: absolute;
+            content: " ";
+            width: 100%;
+            height: 1px;
+            background-color: #ccc;
+            z-order: 0;
+        }
+
+        .stepwizard-step {
+            display: table-cell;
+            text-align: center;
+            position: relative;
+        }
+
+        .btn-circle {
+            width: 56px;
+            height: 56px;
+            text-align: center;
+            padding: 12px 0;
+            font-size: 20px;
+            line-height: 1.428571429;
+            border-radius: 35px;
+            margin-top: -14px;
+            border: solid 3px #ccc !important;
+            opacity: 1 !important;
+            -webkit-box-shadow: inset 0px 0px 0px 3px #fff !important;
+            -moz-box-shadow: inset 0px 0px 0px 3px #fff !important;
+            -o-box-shadow: inset 0px 0px 0px 3px #fff !important;
+            -ms-box-shadow: inset 0px 0px 0px 3px #fff !important;
+            box-shadow: inset 0px 0px 0px 3px #fff !important;
+            backgournd-color: #428bca;
+        }
+    </style>
+    <style>
+        body {
+            font-family: "Lato", sans-serif;
+            transition: background-color .5s;
+        }
+
+        .sidenav {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: #f7f6f6;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+        }
+
+            .sidenav a {
+                padding: 8px 8px 8px 32px;
+                text-decoration: none;
+                /*font-size: 25px;*/
+                /*color: #818181;*/
+                display: block;
+                transition: 0.3s;
+            }
+
+                .sidenav a:hover, .offcanvas a:focus {
+                    /*color: #f1f1f1;*/
+                    color: #808080;
+                }
+
+        .closebtn {
+            position: absolute;
+            top: 0;
+            right: 25px;
+            font-size: 36px !important;
+            margin-left: 50px;
+        }
+
+        #main {
+            transition: margin-left .5s;
+            padding: 16px;
+        }
+
+        @media screen and (max-height: 450px) {
+            .sidenav {
+                padding-top: 15px;
+            }
+
+                .sidenav a {
+                    font-size: 18px;
+                }
+        }
+    </style>
+
+    <style>
+        .zoom {
+            padding: 50px;
+            /*background-color: green;*/
+            transition: transform .2s;
+            width: 200px;
+            height: 200px;
+            margin: 0 auto;
+        }
+
+            .zoom:hover {
+                -ms-transform: scale(1.5); /* IE 9 */
+                -webkit-transform: scale(1.5); /* Safari 3-8 */
+                transform: scale(1.5);
+            }
+
+        #myBtn {
+            /*display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 30px;
+            z-index: 99;
+            font-size: 18px;
+            border: none;
+            outline: none;
+            background-color: red;
+            color: white;
+            cursor: pointer;
+            padding: 15px;
+            border-radius: 4px;*/
+            cursor: pointer;
+            position: fixed;
+            bottom: 20px;
+            z-index: 99;
+            font-size: 18px;
+            right: 20px;
+            display:none;
+            border: none;
+            outline: none;
+            background-color: red;
+            color: white;
+            padding: 15px;
+            border-radius: 4px;
+        }
+
+            #myBtn:hover {
+                background-color: #555;
+            }
+    </style>
+
+    <script>
+        // When the user scrolls down 20px from the top of the document, show the button
+        window.onscroll = function () { scrollFunction() };
+
+        function scrollFunction() {
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                document.getElementById("myBtn").style.display = "block";
+            } else {
+                document.getElementById("myBtn").style.display = "none";
+            }
+        }
+
+        // When the user clicks on the button, scroll to the top of the document
+        function topFunction() {
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+        }
+    </script>
+
+
+
+</head>
+<body>
+
+
+    <form runat="server">
+
+
+        <asp:ScriptManager runat="server" ID="ScriptManagerMain"
+            EnableScriptLocalization="true"
+            EnableScriptGlobalization="True"
+            EnablePageMethods="true"
+            EnablePartialRendering="true">
+            <Scripts>
+                <%--To learn more about bundling scripts in ScriptManager see http://go.microsoft.com/fwlink/?LinkID=301884 --%>
+                <%--Framework Scripts--%>
+                <asp:ScriptReference Name="MsAjaxBundle" />
+                <asp:ScriptReference Name="jquery" />
+                <asp:ScriptReference Name="bootstrap" />
+                <asp:ScriptReference Name="respond" />
+                <asp:ScriptReference Name="WebForms.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebForms.js" />
+                <asp:ScriptReference Name="WebUIValidation.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebUIValidation.js" />
+                <asp:ScriptReference Name="MenuStandards.js" Assembly="System.Web" Path="~/Scripts/WebForms/MenuStandards.js" />
+                <asp:ScriptReference Name="GridView.js" Assembly="System.Web" Path="~/Scripts/WebForms/GridView.js" />
+                <asp:ScriptReference Name="DetailsView.js" Assembly="System.Web" Path="~/Scripts/WebForms/DetailsView.js" />
+                <asp:ScriptReference Name="TreeView.js" Assembly="System.Web" Path="~/Scripts/WebForms/TreeView.js" />
+                <asp:ScriptReference Name="WebParts.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebParts.js" />
+                <asp:ScriptReference Name="Focus.js" Assembly="System.Web" Path="~/Scripts/WebForms/Focus.js" />
+                <asp:ScriptReference Name="WebFormsBundle" />
+                <%--Site Scripts--%>
+            </Scripts>
+        </asp:ScriptManager>
+
+        <div id="mySidenav" class="sidenav" style="display:none">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+            <div class="row" style="background: #f7f6f6">
+                <!--Menu -->
+                <div class="wrapper">
+                    <div class="row row-offcanvas row-offcanvas-left">
+                        <!-- sidebar -->
+                        <div class="column col-md-3 col-md-1 sidebar-offcanvas" id="sidebar">
+                            <%-- <div class="collapse navbar-collapse" id="sidebar">--%>
+                            <ul class="nav" id="menu" runat="server">
+
+                                <%--<li id="li0000" runat="server" visible="true"><a href="Home"><i class="glyphicon glyphicon-home"></i>&nbsp;<span class="collapse in hidden-xs">หน้าแรก</span></a></li>--%>
+                                <li id="li1" runat="server" visible="true"><a href="Home"><i class="glyphicon glyphicon-home"></i>&nbsp;<span class="active">หน้าแรก</span></a></li>
+                                <li id="li0100" runat="server" visible="false"><a href="RolePermission"><i class="glyphicon glyphicon-user"></i>&nbsp;<span class="active">กำหนดสิทธิ์</span></a></li>
+                                <li id="li0300" runat="server" visible="false">
+                                    <a href="javascript:void(0)" data-target="#OrderList" data-toggle="collapse"><i class="glyphicon glyphicon-shopping-cart"></i>&nbsp;<span class="active">ระบบการสั่งซื้อ<span class="caret"></span></span></a>
+                                    <ul class="nav nav-stacked collapse left-submenu" id="OrderList">
+                                        <li style="padding-left: 10px; font-size: 14px;" id="li0301" runat="server" visible="false"><a href="OrderingList" style="color: #22944b"><i class="glyphicon glyphicon-folder-close" style="font-size: 11px"></i>&nbsp;ข้อมูลการสั่งซื้อ</a></li>
+                                        <li style="padding-left: 10px; font-size: 14px;" id="li0302" runat="server" visible="false"><a href="ReceivingList" style="color: #22944b"><i class="glyphicon glyphicon-log-in" style="font-size: 11px"></i>&nbsp;รับสินค้าตามการสั่งซื้อ</a></li>
+                                        <li style="padding-left: 10px; font-size: 14px;" id="li0303" runat="server" visible="false"><a href="CNDNList" style="color: #22944b"><i class="glyphicon glyphicon-bitcoin" style="font-size: 11px"></i>&nbsp;สร้าง CN/DN</a></li>
+                                        <li style="padding-left: 10px; font-size: 14px;" id="li0304" runat="server" visible="false"><a href="ExportPO" style="color: #22944b"><i class="glyphicon glyphicon-export" style="font-size: 11px"></i>&nbsp;export PO No.</a></li>
+                                    </ul>
+                                </li>
+                                <li id="li0400" runat="server" visible="false">
+                                    <a href="javascript:void(0)" data-target="#RequisitionList" data-toggle="collapse"><i class="glyphicon glyphicon-transfer"></i>&nbsp;<span class="active">ระบบเบิก<span class="caret"></span></span></a>
+                                    <ul class="nav nav-stacked collapse left-submenu" id="RequisitionList">
+                                        <li style="padding-left: 10px; font-size: 14px;" id="li0401" runat="server" visible="false"><a href="RequisitionList" style="color: #22944b"><i class="glyphicon glyphicon-chevron-right" style="font-size: 11px"></i>&nbsp;เบิกสินค้า</a></li>
+                                        <li style="padding-left: 10px; font-size: 14px;" id="li0402" runat="server" visible="false"><a href="OtherRequisitionList" style="color: #22944b"><i class="glyphicon glyphicon-chevron-right" style="font-size: 11px"></i>&nbsp;เบิกอื่นๆ</a></li>
+                                    </ul>
+                                </li>
+                                <li id="li0500" runat="server" visible="false">
+                                    <a href="javascript:void(0)" data-target="#CreateClearing" data-toggle="collapse"><i class="glyphicon glyphicon-credit-card"></i>&nbsp;<span class="active">ระบบเคลียร์เงิน<span class="caret"></span></span></a>
+                                    <ul class="nav nav-stacked collapse left-submenu" id="CreateClearing">
+                                        <li style="padding-left: 10px; font-size: 14px;" id="li0501" runat="server" visible="false"><a href="CreateClearing" style="color: #22944b"><i class="glyphicon glyphicon-chevron-right" style="font-size: 11px"></i>&nbsp;เคลียร์เงิน</a></li>
+                                        <li style="padding-left: 10px; font-size: 14px;" id="li0502" runat="server" visible="false"><a href="CommissionReqList" style="color: #22944b"><i class="glyphicon glyphicon-chevron-right" style="font-size: 11px"></i>&nbsp;เบิกค่าคอมมิชชั่น</a></li>
+                                    </ul>
+                                </li>
+
+                                <li id="li0600" runat="server" visible="false">
+                                    <a href="javascript:void(0)" data-target="#Stock" data-toggle="collapse"><i class="glyphicon glyphicon-briefcase"></i>&nbsp;<span class="active">ระบบสต๊อก<span class="caret"></span></span></a>
+                                    <ul class="nav nav-stacked collapse left-submenu" id="Stock">
+                                        <li style="padding-left: 10px; font-size: 14px;" id="li0601" runat="server" visible="false"><a href="StockOnHand" style="color: #22944b"><i class="glyphicon glyphicon-chevron-right" style="font-size: 11px"></i>&nbsp;สินค้าคงคลัง</a></li>
+                                        <li style="padding-left: 10px; font-size: 14px;" id="li0602" runat="server" visible="false"><a href="StockOnHandList" style="color: #22944b"><i class="glyphicon glyphicon-chevron-right" style="font-size: 11px"></i>&nbsp;นับสต๊อก</a></li>
+                                    </ul>
+                                </li>
+                                <li id="li0700" runat="server" visible="false"><a href="Revenue_Expense"><i class="glyphicon glyphicon-retweet"></i>&nbsp;<span class="active">รายรับ-รายจ่าย</span></a></li>
+                                <li id="li0800" runat="server" visible="false"><a href="CreateSalesTarget"><i class="glyphicon glyphicon-stats"></i>&nbsp;<span class="active">Sales Target</span></a></li>
+                                <li id="li0900" runat="server" visible="false">
+                                    <a href="javascript:void(0)" data-target="#itemReport" data-toggle="collapse"><i class="glyphicon glyphicon-list-alt"></i>&nbsp;<span class="active">รายงาน <span class="caret"></span></span></a>
+                                    <ul class="nav nav-stacked collapse left-submenu-submenu" id="itemReport">
+
+                                        <li id="li1901" runat="server" visible="false">
+                                            <a href="javascript:void(0)" data-target="#itemReportOrders" data-toggle="collapse">รายงานระบบสั่งซื้อ <span class="caret"></span></a>
+                                            <ul class="nav nav-stacked collapse left-submenu" id="itemReportOrders">
+                                                <li style="padding-left: 10px; font-size: 14px;" id="li0901" runat="server" visible="false"><a href="ReportOrders" style="color: #22944b"><i class="glyphicon glyphicon-chevron-right" style="font-size: 11px"></i>&nbsp;รายงานยอดสั่งซื้อ</a></li>
+                                                <li style="padding-left: 10px; font-size: 14px;" id="li0902" runat="server" visible="false"><a href="ReportOrdersGroupProducts" style="color: #22944b"><i class="glyphicon glyphicon-chevron-right" style="font-size: 11px"></i>&nbsp;รายงานยอดสั่งซื้อรายสินค้า</a></li>
+                                                <li style="padding-left: 10px; font-size: 14px;" id="li0903" runat="server" visible="false"><a href="ReportOrdersMonthlyTarget" style="color: #22944b"><i class="glyphicon glyphicon-chevron-right" style="font-size: 11px"></i>&nbsp;รายงานยอดสั่งซื้อเทียบเป้ารายเดือน</a></li>
+                                                <li style="padding-left: 10px; font-size: 14px;" id="li0904" runat="server" visible="false"><a href="ReportOrdersQuarterlyTarget" style="color: #22944b"><i class="glyphicon glyphicon-chevron-right" style="font-size: 11px"></i>&nbsp;รายงานยอดสั่งซื้อเทียบเป้ารายไตรมาส</a></li>
+                                                <li style="padding-left: 10px; font-size: 14px;" id="li0905" runat="server" visible="false"><a href="ReportOrdersYearlyTarget" style="color: #22944b"><i class="glyphicon glyphicon-chevron-right" style="font-size: 11px"></i>&nbsp;รายงานยอดสั่งซื้อเทียบเป้ารายปี</a></li>
+                                            </ul>
+                                        </li>
+                                        <li id="li1000" runat="server" visible="false">
+                                            <a href="javascript:void(0)" data-target="#itemReportStocks" data-toggle="collapse">รายงานระบบสต๊อก <span class="caret"></span></a>
+                                            <ul class="nav nav-stacked collapse left-submenu" id="itemReportStocks">
+                                                <li style="padding-left: 10px; font-size: 14px;" id="li1001" runat="server" visible="false"><a href="ReportSummaryPickingSPList" style="color: #22944b"><i class="glyphicon glyphicon-chevron-right" style="font-size: 11px"></i>&nbsp;รายงานสรุปเบิกสินค้าของพนักงาน</a></li>
+                                                <li style="padding-left: 10px; font-size: 14px;" id="li1002" runat="server" visible="false"><a href="ReportProductMovement" style="color: #22944b"><i class="glyphicon glyphicon-chevron-right" style="font-size: 11px"></i>&nbsp;รายงานการเคลื่อนไหวสินค้า</a></li>
+                                                <li style="padding-left: 10px; font-size: 14px;" id="li1003" runat="server" visible="false"><a href="ReportProductAdjustStock" style="color: #22944b"><i class="glyphicon glyphicon-chevron-right" style="font-size: 11px"></i>&nbsp;รายงานการปรับสต๊อกสินค้า</a></li>
+                                                <li style="padding-left: 10px; font-size: 14px;" id="li1004" runat="server" visible="false"><a href="ReportSummaryPickingOtherProduct" style="color: #22944b"><i class="glyphicon glyphicon-chevron-right" style="font-size: 11px"></i>&nbsp;รายงานสรุปการเบิกสินค้าอื่นๆ</a></li>
+                                            </ul>
+                                        </li>
+                                        <li id="li1100" runat="server" visible="false">
+                                            <a href="javascript:void(0)" data-target="#itemReportCustomer" data-toggle="collapse">รายงานข้อมูลลูกค้า <span class="caret"></span></a>
+                                            <ul class="nav nav-stacked collapse left-submenu" id="itemReportCustomer">
+                                                <li style="padding-left: 10px; font-size: 14px;" id="li1101" runat="server" visible="false"><a href="ReportCustomerType" style="color: #22944b"><i class="glyphicon glyphicon-chevron-right" style="font-size: 11px"></i>&nbsp;รายงานสรุปข้อมูลสมาชิก</a></li>
+                                                <li style="padding-left: 10px; font-size: 14px;" id="li1102" runat="server" visible="false"><a href="ReportCustomerDetails" style="color: #22944b"><i class="glyphicon glyphicon-chevron-right" style="font-size: 11px"></i>&nbsp;รายงานรายละเอียดลูกค้า</a></li>
+                                                <li style="padding-left: 10px; font-size: 14px;" id="li1103" runat="server" visible="false"><a href="ReportCustomerPayoutType" style="color: #22944b"><i class="glyphicon glyphicon-chevron-right" style="font-size: 11px"></i>&nbsp;รายงานประเภทการจ่ายเงินของลูกค้า</a></li>
+                                                <li style="padding-left: 10px; font-size: 14px;" id="li1104" runat="server" visible="false"><a href="ReportCustomerBirthday" style="color: #22944b"><i class="glyphicon glyphicon-chevron-right" style="font-size: 11px"></i>&nbsp;รายงานวันเกิดลูกค้า</a></li>
+                                            </ul>
+                                        </li>
+                                        <li id="li1200" runat="server" visible="false">
+                                            <a href="javascript:void(0)" data-target="#itemReportSales" data-toggle="collapse">รายงานการขาย <span class="caret"></span></a>
+                                            <ul class="nav nav-stacked collapse left-submenu" id="itemReportSales" visible="false">
+                                                <li style="padding-left: 10px; font-size: 14px;" id="li1201" runat="server" visible="false"><a href="ReportSaleSummaryByProductGroup" style="color: #22944b"><i class="glyphicon glyphicon-chevron-right" style="font-size: 11px"></i>&nbsp;รายงานสรุปยอดขายแยกตามกลุ่มสินค้า</a></li>
+                                            </ul>
+                                        </li>
+                                        <li id="li1300" runat="server" visible="false">
+                                            <a href="javascript:void(0)" data-target="#itemReportEmployee" data-toggle="collapse">รายงานพนักงาน <span class="caret"></span></a>
+                                            <ul class="nav nav-stacked collapse left-submenu" id="itemReportEmployee" visible="false">
+                                                <li style="padding-left: 10px; font-size: 14px;" id="li1301" runat="server" visible="false"><a href="ReportAllEmployee" style="color: #22944b"><i class="glyphicon glyphicon-chevron-right" style="font-size: 11px"></i>&nbsp;รายงานจำนวนพนักงานทั้งหมดของศูนย์</a></li>
+                                                <li style="padding-left: 10px; font-size: 14px;" id="li1302" runat="server" visible="false"><a href="ReportTotalSPStatus" style="color: #22944b"><i class="glyphicon glyphicon-chevron-right" style="font-size: 11px"></i>&nbsp;รายงานสถานะของพนักงานทั้งหมด</a></li>
+                                                <li style="padding-left: 10px; font-size: 14px;" id="li1303" runat="server" visible="false"><a href="ReportCommissions" style="color: #22944b"><i class="glyphicon glyphicon-chevron-right" style="font-size: 11px"></i>&nbsp;รายงานค่าคอมมิชชั่น</a></li>
+                                                <li style="padding-left: 10px; font-size: 14px;" id="li1304" runat="server" visible="false"><a href="ReportWithdrawalCommissions" style="color: #22944b"><i class="glyphicon glyphicon-chevron-right" style="font-size: 11px"></i>&nbsp;รายงานการเบิกค่าคอมมิชชั่น</a></li>
+                                            </ul>
+                                        </li>
+                                        <li id="li1400" runat="server" visible="false">
+                                            <a href="javascript:void(0)" data-target="#itemReportRevenue" data-toggle="collapse">รายงานรายรับ-รายจ่าย <span class="caret"></span></a>
+                                            <ul class="nav nav-stacked collapse left-submenu" id="itemReportRevenue" visible="false">
+                                                <li style="padding-left: 10px; font-size: 14px;" id="li1401" runat="server" visible="false"><a href="ReportRevenue" style="color: #22944b"><i class="glyphicon glyphicon-chevron-right" style="font-size: 11px"></i>&nbsp;รายงานรายรับ</a></li>
+                                                <li style="padding-left: 10px; font-size: 14px;" id="li1402" runat="server" visible="false"><a href="ReportExpenditure" style="color: #22944b"><i class="glyphicon glyphicon-chevron-right" style="font-size: 11px"></i>&nbsp;รายงานรายรับ-รายจ่ายรายเดือน</a></li>
+                                                <li style="padding-left: 10px; font-size: 14px;" id="li1403" runat="server" visible="false"><a href="ReportSummaryIncome" style="color: #22944b"><i class="glyphicon glyphicon-chevron-right" style="font-size: 11px"></i>&nbsp;รายงานสรุปรายรับ-รายจ่าย</a></li>
+                                                <li style="padding-left: 10px; font-size: 14px;" id="li1404" runat="server" visible="false"><a href="ReportFinanceClerk" style="color: #22944b"><i class="glyphicon glyphicon-chevron-right" style="font-size: 11px"></i>&nbsp;รายงานการเงินเสมียน</a></li>
+                                                <li style="padding-left: 10px; font-size: 14px;" id="li1405" runat="server" visible="false"><a href="ReportDailyFinance" style="color: #22944b"><i class="glyphicon glyphicon-chevron-right" style="font-size: 11px"></i>&nbsp;รายงานการเงินประจำวัน</a></li>
+                                            </ul>
+                                        </li>
+                                        <li id="li1500" runat="server" visible="false">
+                                            <a href="javascript:void(0)" data-target="#itemReportDebt" data-toggle="collapse">รายงานระบบหนี้ <span class="caret"></span></a>
+                                            <ul class="nav nav-stacked collapse left-submenu" id="itemReportDebt" visible="false">
+                                                <li style="padding-left: 10px; font-size: 14px;" id="li1501" runat="server" visible="false"><a href="ReportReduceDebt_CustomerAndSP" style="color: #22944b"><i class="glyphicon glyphicon-chevron-right" style="font-size: 11px"></i>&nbsp;รายงานหนี้ลูกค้ากับพนักงาน</a></li>
+                                                <li style="padding-left: 10px; font-size: 14px;" id="li1502" runat="server" visible="false"><a href="ReportReduceDebt_SPAndAgent" style="color: #22944b"><i class="glyphicon glyphicon-chevron-right" style="font-size: 11px"></i>&nbsp;รายงานหนี้พนักงานกับเอเยนต์</a></li>
+                                                <li style="padding-left: 10px; font-size: 14px;" id="li1503" runat="server" visible="false"><a href="ReportReduceDebt_CustomerAndAgent" style="color: #22944b"><i class="glyphicon glyphicon-chevron-right" style="font-size: 11px"></i>&nbsp;รายงานหนี้ลูกค้ากับเอเยนต์</a></li>
+                                                <li style="padding-left: 10px; font-size: 14px;" id="li1504" runat="server" visible="false"><a href="ReportReduceDebt" style="color: #22944b"><i class="glyphicon glyphicon-chevron-right" style="font-size: 11px"></i>&nbsp;รายงานลดหนี้/เพิ่มหนี้</a></li>
+                                            </ul>
+                                        </li>
+                                        <li id="li1601" runat="server" visible="false"><a href="ReportPoint"><span class="collapse in hidden-xs">รายงานแต้ม</span></a></li>
+                                        <li id="li1701" runat="server" visible="false"><a href="ReportPoint_Agent"><span class="collapse in hidden-xs">รายงานแต้มสำหรับเอเยนต์</span></a></li>
+                                    </ul>
+                                </li>
+
+                                <li id="li0200" runat="server" visible="false">
+                                    <a href="javascript:void(0)" data-target="#MasterData" data-toggle="collapse">
+                                        <i class="glyphicon glyphicon-king"></i>&nbsp;<span class="active">ข้อมูล Master<span class="caret"></span></span></a>
+                                    <ul class="nav nav-stacked collapse left-submenu" id="MasterData">
+                                        <li style="padding-left: 10px; font-size: 14px;" id="li0201" runat="server" visible="false"><a href="CreateCPMeijiUser.aspx" style="color: #22944b"><i class="glyphicon glyphicon-chevron-right" style="font-size: 11px"></i>&nbsp;ข้อมูลพนักงาน ซีพี-เมจิ</a></li>
+                                        <li style="padding-left: 10px; font-size: 14px;" id="li0202" runat="server" visible="false"><a href="CreateAgentUser.aspx" style="color: #22944b"><i class="glyphicon glyphicon-chevron-right" style="font-size: 11px"></i>&nbsp;ข้อมูลพนักงานเอเยนต์</a></li>
+                                        <li style="padding-left: 10px; font-size: 14px;" id="li0203" runat="server" visible="false"><a href="AgentList" style="color: #22944b"><i class="glyphicon glyphicon-chevron-right" style="font-size: 11px"></i>&nbsp;ข้อมูลเอเยนต์</a></li>
+                                        <li style="padding-left: 10px; font-size: 14px;" id="li0204" runat="server" visible="false"><a href="CustomerList" style="color: #22944b"><i class="glyphicon glyphicon-chevron-right" style="font-size: 11px"></i>&nbsp;ข้อมูลลูกค้า</a></li>
+                                        <li style="padding-left: 10px; font-size: 14px;" id="li0205" runat="server" visible="false"><a href="Product_List.aspx" style="color: #22944b"><i class="glyphicon glyphicon-chevron-right" style="font-size: 11px"></i>&nbsp;ข้อมูลสินค้า</a></li>
+                                        <li style="padding-left: 10px; font-size: 14px;" id="li0206" runat="server" visible="false"><a href="PriceGroupList" style="color: #22944b"><i class="glyphicon glyphicon-chevron-right" style="font-size: 11px"></i>&nbsp;ข้อมูลราคา</a></li>
+                                        <li style="padding-left: 10px; font-size: 14px;" id="li0207" runat="server" visible="false"><a href="NewsList" style="color: #22944b"><i class="glyphicon glyphicon-chevron-right" style="font-size: 11px"></i>&nbsp;ข้อมูลข่าวสาร</a></li>
+                                        <li style="padding-left: 10px; font-size: 14px;" id="li0208" runat="server" visible="false"><a href="ItemValueList" style="color: #22944b"><i class="glyphicon glyphicon-chevron-right" style="font-size: 11px"></i>&nbsp;ข้อมูลแต่ละ Item</a></li>
+                                        <li style="padding-left: 10px; font-size: 14px;" id="li0209" runat="server" visible="false"><a href="AccountTypeList" style="color: #22944b"><i class="glyphicon glyphicon-chevron-right" style="font-size: 11px"></i>&nbsp;ข้อมูลประเภทบัญชี</a></li>
+                                        <li style="padding-left: 10px; font-size: 14px;" id="li0210" runat="server" visible="false"><a href="OrderAndDeliveryCycleList" style="color: #22944b"><i class="glyphicon glyphicon-chevron-right" style="font-size: 11px"></i>&nbsp;ข้อมูลรอบการสั่งการส่ง</a></li>
+                                    </ul>
+                                </li>
+
+
+                                <%--<li><a href="ChangePassword.aspx"><i class="glyphicon glyphicon-user"></i>&nbsp;<span class="collapse in hidden-xs">เปลี่ยนรหัสผ่าน</span></a></li>--%>
+                                <%--<li><a href="javascript:void(0)"><i class="glyphicon glyphicon-user"></i>&nbsp;<span class="collapse in hidden-xs">แก้ไขข้อมูลส่วนตัว</span></a></li>--%>
+                                <%--<li><a href="javascript:void(0)"><i class="glyphicon glyphicon-lock"></i>&nbsp;<span class="collapse in hidden-xs">ออกจากระบบ</span></a></li>--%>
+                            </ul>
+                        </div>
+                        <!-- /sidebar -->
+
+                        <!-- main right col -->
+                        <!-- /main -->
+                    </div>
+                </div>
+                <!--#Menu-->
+
+            </div>
+        </div>
+
+
+        <div id="main">
+             <div class="project-name navbar-fixed-top">
+
+                        <span id="menu1" style="font-size: 25px; cursor: pointer" onclick="openNav()" class="glyphicon glyphicon-list"></span>
+                        <%-- <span style="font-size: 25px; cursor: pointer" onclick="openNav()"><i class="fa fa-bars"></i></span>--%>
+                        <%-- <button class="btn" onclick="openNav()"><i class="fa fa-bars"></i> Menu</button>--%>
+                    </div>
+
+
+            <div class="col-md-12 top-background" style="padding: 0px; margin: 0px; overflow: hidden; height: 100px; width: 100%; background-color: #fff;">
+
+                <div class="container-full">
+                   
+
+                    <div id="bar-top">&nbsp;</div>
+                    <div class="row" style="padding: 0px; margin: 0px">
+
+                        <!-- 147 -->
+                        <%--  <div class="project-name navbar-fixed-top">
+
+                        <span style="font-size: 25px; cursor: pointer" onclick="openNav()">&#9776;</span>
+
+                    </div>--%>
+
+                        <div class="login-display">
+
+                            <a href="#" style="color: #fff;">
+                                <img src="../Images/user.png" style="padding-right: 10px; margin-top: -5px" title="My Profile" />
+                                <asp:Label runat="server" ID="lbl_user_id"></asp:Label>
+                            </a>|
+                         <a href="#" style="color: #fff;">
+                             <asp:Label runat="server" ID="lbl_Position"></asp:Label>
+                         </a>|
+                        <a href="ChangePassword.aspx" style="color: #fff;">เปลี่ยนรหัสผ่าน</a>
+                            <%--<a href="#" style="color: #fff;">แก้ไขข้อมูลส่วนตัว
+                            <!--<img src="Images/help.png" title="Help" />-->
+                        </a>--%>
+                        </div>
+
+
+                        <div class="option-display">
+                            <!--<img src="Images/dialog-question.png" title="Help" />-->
+                            <span class="glyphicon glyphicon-log-out"></span>
+                            <%-- <a href="#" style="color: #000;">ช่วยเหลือ
+                        </a>--%>
+                        
+                        &nbsp;|&nbsp;&nbsp;
+                        
+                        <!--<img src="Images/object-locked.png" title="Logout" />-->
+                            <%--                        <a href="../Login" style="color: #000;">ออกจากระบบ
+                        
+                        
+                        </a>--%>
+
+
+                            <asp:LinkButton ID="logout" Text="ออกจากระบบ" runat="server" OnClick="logout_Click" Font-Size="Medium" />
+
+                            &nbsp;&nbsp;<img src="../Images/logo.png" width="70" />
+                        </div>
+
+                        <div class="project-name ">
+
+                            <img src="../Images/project_name.png" />
+                        </div>
+                    </div>
+                </div>
+                <div id="bar" style="margin-top: 2px">&nbsp;</div>
+
+            </div>
+
+
+            <%--  <div id="main">
+            <h2>Sidenav Push Example</h2>
+            <p>Click on the element below to open the side navigation menu, and push this content to the right. Notice that we add a black see-through background-color to body when the sidenav is opened.</p>
+            <span style="font-size: 30px; cursor: pointer" onclick="openNav()">☰ open</span>
+        </div>--%>
+
+
+
+            <%--  <nav class="navbar navbar-inverse">--%>
+            <div class="container-full">
+                <div class="row" style="background: #f7f6f6">
+
+                    <div class=" menu-display" onblur="closeNav()">
+
+                        <%--<input type="button" onclick="topFunction()" id="myBtn" title="กลับขึ้นด้านบน" value="กลับขึ้นด้านบน" />--%>
+                        <a id="myBtn" onclick="topFunction()" href="#" class="btn btn-primary btn-lg back-to-top" role="button" title="กลับขึ้นด้านบน" data-toggle="tooltip" data-placement="left"><span class="glyphicon glyphicon-chevron-up"></span></a>
+
+                        <%--<span id="myBtn" style="font-size: 25px; cursor: pointer" onclick="topFunction()" class="glyphicon glyphicon-triangle-top"></span>--%>
+                        <%--  <div class="menu-display">--%>
+
+                        <%--                    <p id="server-time-label">
+                        <span class="glyphicon glyphicon-time" style="top: 5px"></span>
+                        <!--<img src="Images/appointment.png"/>-->
+                        <%-- &nbsp;เวลาขณะนี้&nbsp;&nbsp;:&nbsp;&nbsp;
+
+                        <span id="time" style="color: blue"></span>
+                    </p>
+                    <p id="agent-name">
+                        &nbsp;ตัวแทนจำหน่าย&nbsp;&nbsp;:&nbsp;&nbsp;<span style="color: blue">
+                            <asp:label id="lbl_agent_name" runat="server" text=""></asp:label>
+                        </span>
+                    </p>
+
+                        --%>
+                        <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                        </asp:ContentPlaceHolder>
+                    </div>
+                </div>
+            </div>
+            <%-- </nav>--%>
+
+
+            <footer>
+                <div id="info-bar col-md-12">
+                    <div class="container clearfix col-md-12">
+                        <%--<span class="all-tutorials"><a href="http://bootsnipp.com/cppratikcp">← all tutorials</a></span>
+                    <span class="back-to-tutorial"><a href="https://www.facebook.com/pratik.chauhan.cp">CHUAHAN PRATIK</a></span>--%>
+                        <%--<p class="pull-left">CP-Meiji Co, Ltd &copy; <%: DateTime.Now.Year %> , All Rights Reserved - Smart Agent Management System (SAM).</p>--%>
+                    CP-Meiji Co, Ltd &copy; <%: DateTime.Now.Year %> , All Rights Reserved - Smart Agent Management System (SAM).
+                    </div>
+                </div>
+                <!-- /#top-bar -->
+            </footer>
+
+        </div>
+        <!-- /footer -->
+
+
+        <%--        <footer class="footer-main" style="margin-top: 0px">
+            <p class="pull-left">CP-Meiji Co, Ltd &copy; <%: DateTime.Now.Year %> , All Rights Reserved - Smart Agent Management System (SAM).</p>
+        </footer>--%>
+    </form>
+
+
+</body>
+</html>
